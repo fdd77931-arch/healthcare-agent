@@ -1,0 +1,151 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="900" viewBox="0 0 1440 900" role="img" aria-labelledby="title desc">
+  <title id="title">循迹确定性安全路径架构</title>
+  <desc id="desc">Web 界面经过应用装配和生命周期 API 进入槽位与状态机；状态机调用红旗规则、问题目录、输出安全门和结果模型。模型适配边界、会话存储、匿名事件和离线评测位于受控边界。</desc>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8.5" refY="5" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L10,5 L0,10 z" fill="#176b5d"/>
+    </marker>
+    <marker id="arrow-danger" markerWidth="10" markerHeight="10" refX="8.5" refY="5" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L10,5 L0,10 z" fill="#a23f35"/>
+    </marker>
+    <style>
+      .canvas { fill: #edf5f2; }
+      .panel { fill: #fff; stroke: #c9dcd6; stroke-width: 2; }
+      .panel-strong { fill: #e2f0eb; stroke: #176b5d; stroke-width: 2.5; }
+      .panel-danger { fill: #f8e8e5; stroke: #a23f35; stroke-width: 2.5; }
+      .panel-warn { fill: #fbf1e4; stroke: #9a5b16; stroke-width: 2; }
+      .ink { fill: #173b36; }
+      .muted { fill: #4f6f69; }
+      .danger { fill: #8d342c; }
+      .warning { fill: #81501c; }
+      .title { font: 700 34px -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif; }
+      .subtitle { font: 500 17px -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif; }
+      .label { font: 700 21px -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif; }
+      .body { font: 500 16px -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif; }
+      .code { font: 500 14px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+      .small { font: 600 13px -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif; letter-spacing: .04em; }
+      .flow { fill: none; stroke: #176b5d; stroke-width: 3; marker-end: url(#arrow); }
+      .flow-danger { fill: none; stroke: #a23f35; stroke-width: 3; marker-end: url(#arrow-danger); }
+      .assist { fill: none; stroke: #6f8f88; stroke-width: 2; stroke-dasharray: 7 7; marker-end: url(#arrow); }
+    </style>
+  </defs>
+
+  <rect class="canvas" width="1440" height="900"/>
+
+  <g transform="translate(72 65)">
+    <text class="title ink" x="0" y="0">循迹｜确定性安全路径</text>
+    <text class="subtitle muted" x="0" y="34">默认离线演示 · 无外部模型调用 · 红旗规则优先于普通分层</text>
+  </g>
+
+  <g transform="translate(72 145)">
+    <rect class="panel" width="224" height="118" rx="18"/>
+    <text class="small muted" x="24" y="31">INTERFACE</text>
+    <text class="label ink" x="24" y="67">Web 界面</text>
+    <text class="code muted" x="24" y="94">app/web/</text>
+  </g>
+
+  <g transform="translate(352 145)">
+    <rect class="panel" width="224" height="118" rx="18"/>
+    <text class="small muted" x="24" y="31">ASSEMBLY</text>
+    <text class="label ink" x="24" y="67">应用装配</text>
+    <text class="code muted" x="24" y="94">app/main.py</text>
+  </g>
+
+  <g transform="translate(632 145)">
+    <rect class="panel-strong" width="224" height="118" rx="18"/>
+    <text class="small muted" x="24" y="31">LIFECYCLE</text>
+    <text class="label ink" x="24" y="67">生命周期 API</text>
+    <text class="code muted" x="24" y="94">app/api.py</text>
+  </g>
+
+  <g transform="translate(912 145)">
+    <rect class="panel-strong" width="328" height="118" rx="18"/>
+    <text class="small muted" x="24" y="31">BOUNDED DECISION</text>
+    <text class="label ink" x="24" y="67">槽位与状态机</text>
+    <text class="code muted" x="24" y="94">app/domain/triage.py · advance()</text>
+  </g>
+
+  <path class="flow" d="M296 204 H340"/>
+  <path class="flow" d="M576 204 H620"/>
+  <path class="flow" d="M856 204 H900"/>
+
+  <g transform="translate(72 350)">
+    <rect class="panel" width="256" height="110" rx="16"/>
+    <text class="label ink" x="22" y="42">模型适配边界</text>
+    <text class="code muted" x="22" y="72">app/services/llm.py</text>
+    <text class="small muted" x="22" y="94">DemoSlotParser</text>
+  </g>
+
+  <g transform="translate(72 505)">
+    <rect class="panel" width="256" height="110" rx="16"/>
+    <text class="label ink" x="22" y="42">会话存储</text>
+    <text class="code muted" x="22" y="72">app/services/sessions.py</text>
+    <text class="small muted" x="22" y="94">匿名 · 内存 · 30 分钟 TTL</text>
+  </g>
+
+  <g transform="translate(72 660)">
+    <rect class="panel" width="256" height="110" rx="16"/>
+    <text class="label ink" x="22" y="42">匿名事件</text>
+    <text class="code muted" x="22" y="72">app/services/analytics.py</text>
+    <text class="small muted" x="22" y="94">允许列表 · 不记录原始症状</text>
+  </g>
+
+  <path class="assist" d="M328 405 C470 405 510 270 632 230"/>
+  <path class="assist" d="M328 560 C470 560 510 310 632 238"/>
+  <path class="assist" d="M632 248 C510 340 486 715 328 715"/>
+
+  <g transform="translate(404 350)">
+    <rect class="panel" width="250" height="110" rx="16"/>
+    <text class="label ink" x="22" y="42">问题目录</text>
+    <text class="code muted" x="22" y="72">app/domain/questions.py</text>
+    <text class="small muted" x="22" y="94">固定顺序 · 最多 6 问</text>
+  </g>
+
+  <path class="assist" d="M654 405 C760 405 820 320 944 263"/>
+
+  <g transform="translate(724 350)">
+    <rect class="panel-danger" width="252" height="110" rx="16"/>
+    <text class="label danger" x="22" y="42">红旗规则</text>
+    <text class="code danger" x="22" y="72">app/domain/red_flags.py</text>
+    <text class="small danger" x="22" y="94">任意轮命中即中断</text>
+  </g>
+
+  <path class="flow-danger" d="M1076 263 C1076 310 976 326 894 350"/>
+  <text class="small danger" x="1015" y="322">每轮先检查</text>
+
+  <g transform="translate(1046 350)">
+    <rect class="panel" width="322" height="110" rx="16"/>
+    <text class="label ink" x="22" y="42">输出安全门</text>
+    <text class="code muted" x="22" y="72">app/domain/safety.py</text>
+    <text class="small muted" x="22" y="94">措辞边界 · 时间窗一致性</text>
+  </g>
+
+  <path class="flow" d="M976 405 H1034"/>
+
+  <g transform="translate(1046 505)">
+    <rect class="panel" width="322" height="110" rx="16"/>
+    <text class="label ink" x="22" y="42">结果模型</text>
+    <text class="code muted" x="22" y="72">app/domain/models.py</text>
+    <text class="small muted" x="22" y="94">TriageSlots · TriageResult</text>
+  </g>
+
+  <path class="flow" d="M1207 460 V493"/>
+  <path class="assist" d="M1207 615 C1207 710 788 710 744 263"/>
+
+  <g transform="translate(404 660)">
+    <rect class="panel-warn" width="572" height="140" rx="18"/>
+    <text class="small warning" x="24" y="31">REPRODUCIBLE EVIDENCE</text>
+    <text class="label warning" x="24" y="66">离线评测</text>
+    <text class="code warning" x="24" y="95">scripts/run_eval.py · data/eval_cases.jsonl</text>
+    <text class="body warning" x="24" y="122">复用状态机、红旗规则与输出安全门 · 当前安全门槛未通过</text>
+  </g>
+
+  <path class="assist" d="M690 660 V612 C690 546 780 516 856 460"/>
+  <path class="assist" d="M780 660 V612 C780 540 1120 520 1120 460"/>
+
+  <g transform="translate(1046 686)">
+    <rect class="panel-danger" width="322" height="90" rx="16"/>
+    <text class="small danger" x="22" y="30">SAFETY GATE</text>
+    <text class="label danger" x="22" y="61">92% &lt; 98% · 未通过</text>
+  </g>
+</svg>

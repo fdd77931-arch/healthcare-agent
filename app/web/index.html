@@ -1,0 +1,345 @@
+<!doctype html>
+<!--
+THESIS: 循迹把零散症状整理成下一步行动，拒绝通用聊天窗口。
+OWN-WORLD: 鼠尾草画布、白色记录面、墨绿正文与一条纵向循迹线组成诊室行动记录页。
+STORY: 用户说明主诉，理解每次追问的原因，最后得到时限、科室与升级信号。
+FIRST VIEWPORT: 移动端先见标题和主诉表单；桌面左侧为产品边界与路径，右侧表单始终在首屏。
+FORM: 已批准的非对称行动记录页；结构候选首选；seed key 为 brief-pinned。
+-->
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    >
+    <meta name="theme-color" content="#edf5f2">
+    <meta
+      name="description"
+      content="循迹通过有限追问，帮助你判断下一步就医行动。不提供医学诊断。"
+    >
+    <title>循迹｜症状行动分层</title>
+    <link rel="stylesheet" href="/static/styles.css">
+    <script src="/static/app_logic.js" defer></script>
+    <script src="/static/app.js" defer></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#assessment">跳到症状评估</a>
+
+    <header class="masthead">
+      <a class="brand" href="/" aria-label="循迹首页">
+        <span class="brand-mark" aria-hidden="true">循</span>
+        <span>
+          <strong>循迹</strong>
+          <small>症状行动分层</small>
+        </span>
+      </a>
+      <p class="privacy-note">
+        <span class="privacy-dot" aria-hidden="true"></span>
+        匿名会话 · 30 分钟自动失效
+      </p>
+    </header>
+
+    <main id="assessment" class="assessment-shell">
+      <section class="orientation" aria-labelledby="page-title">
+        <p class="section-kicker">从症状到下一步</p>
+        <h1 id="page-title">
+          <span class="title-mobile">先把症状说清楚，<br><em>再决定行动。</em></span>
+          <span class="title-desktop">
+            <span class="headline-line">先把症状</span>
+            <span class="headline-line">说清楚，</span>
+            <em class="headline-line">再决定行动。</em>
+          </span>
+        </h1>
+        <p class="orientation-copy">
+          <span class="orientation-copy-mobile">
+            先判断是否需要立即处理，再给出下一步行动。
+          </span>
+          <span class="orientation-copy-desktop">
+            循迹会用不超过六个问题整理关键信息，先识别需要立即处理的风险，再给出就医时限建议。
+          </span>
+        </p>
+
+        <ol class="trail" aria-label="评估的三个阶段">
+          <li class="trail-step is-current" data-trail-step="start">
+            <span class="trail-dot" aria-hidden="true"></span>
+            <span><b>说明主诉</b><small>用自己的话描述</small></span>
+          </li>
+          <li class="trail-step" data-trail-step="followup">
+            <span class="trail-dot" aria-hidden="true"></span>
+            <span><b>补充线索</b><small>逐次回答一个问题</small></span>
+          </li>
+          <li class="trail-step" data-trail-step="result">
+            <span class="trail-dot" aria-hidden="true"></span>
+            <span><b>明确行动</b><small>查看时限与升级信号</small></span>
+          </li>
+        </ol>
+
+        <div class="boundary-note">
+          <span class="boundary-symbol" aria-hidden="true">非</span>
+          <p>
+            <strong>行动建议，不是诊断。</strong>
+            循迹不提供医学诊断、治疗方案或用药建议。
+          </p>
+        </div>
+      </section>
+
+      <section class="workspace" aria-label="症状评估工作区">
+        <div class="workspace-meta">
+          <span>当前记录</span>
+          <span id="record-status">尚未开始</span>
+        </div>
+
+        <div id="status-live" class="sr-only" aria-live="polite" aria-atomic="true"></div>
+
+        <section id="start-state" class="flow-state start-state" aria-labelledby="start-heading">
+          <div class="state-heading">
+            <p class="state-index">开始评估</p>
+            <h2 id="start-heading">哪里不舒服？</h2>
+            <p>先写最困扰你的症状、部位和大约持续多久。暂时不确定也可以直接说明。</p>
+          </div>
+
+          <form id="symptom-form" class="answer-form">
+            <label for="symptom-input">你的主要症状</label>
+            <textarea
+              id="symptom-input"
+              name="symptom"
+              rows="5"
+              minlength="1"
+              maxlength="2000"
+              placeholder="例如：从昨晚开始右下腹持续疼痛，走动时更明显"
+              required
+            ></textarea>
+            <div class="form-foot">
+              <p>请不要填写姓名、电话、身份证号等身份信息。</p>
+              <button class="button button-primary" type="submit">
+                开始整理
+                <span aria-hidden="true">→</span>
+              </button>
+            </div>
+          </form>
+          <div id="mobile-boundary" class="mobile-boundary">
+            <span aria-hidden="true">非</span>
+            <p><strong>行动建议，不是诊断。</strong> 不提供治疗或用药建议。</p>
+          </div>
+        </section>
+
+        <section
+          id="loading-state"
+          class="flow-state loading-state"
+          aria-labelledby="loading-heading"
+          hidden
+        >
+          <div class="loading-mark" aria-hidden="true">
+            <span></span><span></span><span></span>
+          </div>
+          <p class="state-index">正在整理</p>
+          <h2 id="loading-heading">正在核对下一步需要了解什么</h2>
+          <p>通常只需要几秒，请留在当前页面。</p>
+        </section>
+
+        <section
+          id="followup-state"
+          class="flow-state followup-state"
+          aria-labelledby="question-heading"
+          hidden
+        >
+          <div class="question-meta">
+            <p id="question-progress">第 1 个问题，共 6 个</p>
+            <div class="progress-track" aria-hidden="true">
+              <span id="progress-fill"></span>
+            </div>
+          </div>
+
+          <div class="state-heading">
+            <p class="state-index">补充一个线索</p>
+            <h2 id="question-heading" tabindex="-1">症状从什么时候开始？</h2>
+          </div>
+
+          <div class="rationale">
+            <span aria-hidden="true">为什么问</span>
+            <p id="question-rationale">起始时间会影响就医时间建议。</p>
+          </div>
+
+          <form id="answer-form" class="answer-form">
+            <label for="answer-input">你的回答</label>
+            <textarea
+              id="answer-input"
+              name="answer"
+              rows="4"
+              minlength="1"
+              maxlength="2000"
+              placeholder="用一句或几句话回答即可"
+              required
+            ></textarea>
+            <div class="form-foot">
+              <p>每次只记录当前问题的回答。</p>
+              <button class="button button-primary" type="submit">
+                继续评估
+                <span aria-hidden="true">→</span>
+              </button>
+            </div>
+          </form>
+        </section>
+
+        <section
+          id="emergency-state"
+          class="flow-state emergency-state"
+          aria-labelledby="emergency-heading"
+          hidden
+        >
+          <p class="state-index danger-text">需要立即行动</p>
+          <h2 id="emergency-heading" tabindex="-1">请立即呼叫 120</h2>
+          <p class="emergency-lead">
+            当前信息触发了固定高风险规则。不要继续在线评估，也不要独自驾车前往医院。
+          </p>
+          <a class="button button-danger emergency-call" href="tel:120">
+            <span aria-hidden="true">☎</span>
+            呼叫急救 120
+          </a>
+          <div class="result-note">
+            <h3>现在可以做什么</h3>
+            <ul>
+              <li>尽快让身边的人知道你的情况并陪同。</li>
+              <li>保持电话畅通，按急救接线员指引行动。</li>
+              <li>如环境不安全，先移至安全位置。</li>
+            </ul>
+          </div>
+          <p id="emergency-disclaimer" class="disclaimer"></p>
+        </section>
+
+        <section
+          id="result-state"
+          class="flow-state result-state"
+          aria-labelledby="result-heading"
+          hidden
+        >
+          <div class="result-lead">
+            <div>
+              <p id="result-level" class="result-badge">行动建议</p>
+              <h2 id="result-heading" tabindex="-1">建议近期安排门诊</h2>
+            </div>
+            <p id="result-window" class="result-window"></p>
+          </div>
+
+          <div class="result-grid">
+            <section class="result-section" aria-labelledby="department-heading">
+              <h3 id="department-heading">可考虑的科室</h3>
+              <ul id="department-list"></ul>
+            </section>
+            <section class="result-section" aria-labelledby="reason-heading">
+              <h3 id="reason-heading">这样建议的原因</h3>
+              <ul id="reason-list"></ul>
+            </section>
+            <section class="result-section" aria-labelledby="unknown-heading">
+              <h3 id="unknown-heading">仍不确定的信息</h3>
+              <ul id="unknown-list"></ul>
+            </section>
+            <section class="result-section warning-section" aria-labelledby="sign-heading">
+              <h3 id="sign-heading">出现这些情况需升级行动</h3>
+              <ul id="sign-list"></ul>
+            </section>
+          </div>
+
+          <section class="summary-block" aria-labelledby="summary-heading">
+            <div>
+              <p class="state-index">就诊摘要</p>
+              <h3 id="summary-heading">带给医生的一页信息</h3>
+            </div>
+            <p id="visit-summary"></p>
+            <button id="copy-summary" class="button button-secondary" type="button">
+              复制就诊摘要
+            </button>
+            <p id="copy-status" class="inline-status" aria-live="polite"></p>
+          </section>
+
+          <form id="feedback-form" class="feedback-form">
+            <fieldset>
+              <legend>这份行动建议对你有帮助吗？</legend>
+              <label class="choice">
+                <input type="radio" name="helpful" value="true" checked>
+                <span>有帮助</span>
+              </label>
+              <label class="choice">
+                <input type="radio" name="helpful" value="false">
+                <span>需要改进</span>
+              </label>
+            </fieldset>
+            <div id="feedback-details" class="feedback-details" hidden>
+              <label for="feedback-label">最需要改进的方面</label>
+              <select id="feedback-label" name="label" disabled>
+                <option value="unclear_question">问题不够清楚</option>
+                <option value="missing_option">缺少合适选项</option>
+                <option value="diagnostic_language">表达像医学诊断</option>
+                <option value="treatment_language">出现治疗或用药表达</option>
+                <option value="other_safety_concern">其他安全顾虑</option>
+              </select>
+            </div>
+            <button class="button button-secondary" type="submit">提交反馈</button>
+            <p id="feedback-status" class="inline-status" aria-live="polite"></p>
+          </form>
+
+          <p id="result-disclaimer" class="disclaimer"></p>
+        </section>
+
+        <section
+          id="insufficient-state"
+          class="flow-state insufficient-state"
+          aria-labelledby="insufficient-heading"
+          hidden
+        >
+          <p class="state-index warning-text">信息不足</p>
+          <h2 id="insufficient-heading" tabindex="-1">暂时无法安全地给出行动等级</h2>
+          <p id="insufficient-reason">
+            当前信息不足或存在冲突。请联系医疗专业人员进一步确认，不要只依赖在线信息。
+          </p>
+          <div class="result-note">
+            <h3>建议下一步</h3>
+            <ul>
+              <li>回想症状开始时间、变化趋势和严重程度。</li>
+              <li>联系社区医疗机构、家庭医生或正规在线医疗服务。</li>
+              <li>如出现明显加重或高风险表现，立即呼叫 120。</li>
+            </ul>
+          </div>
+          <button id="restart-assessment" class="button button-primary" type="button">
+            重新开始评估
+          </button>
+          <p id="insufficient-disclaimer" class="disclaimer"></p>
+        </section>
+
+        <section
+          id="error-state"
+          class="flow-state error-state"
+          aria-labelledby="error-heading"
+          role="alert"
+          hidden
+        >
+          <span class="error-mark" aria-hidden="true">!</span>
+          <p class="state-index danger-text">连接中断</p>
+          <h2 id="error-heading" tabindex="-1">这次信息没有发送成功</h2>
+          <p id="error-message">
+            网络连接可能不稳定。你填写的内容仍保留在本页，可以直接重试。
+          </p>
+          <div class="error-actions">
+            <button id="retry-request" class="button button-primary" type="button">
+              重试刚才的操作
+            </button>
+            <button id="return-to-edit" class="button button-secondary" type="button">
+              返回修改
+            </button>
+          </div>
+        </section>
+
+        <footer class="workspace-footer">
+          <p>当前页面关闭后，不会在浏览器保存本次回答。</p>
+          <button id="clear-session" class="text-button" type="button">清除本次记录</button>
+        </footer>
+      </section>
+    </main>
+
+    <a class="fixed-emergency" href="tel:120" aria-label="紧急情况呼叫 120">
+      <span class="fixed-emergency-label">紧急情况</span>
+      <strong>呼叫 120</strong>
+    </a>
+  </body>
+</html>

@@ -1,0 +1,21 @@
+[project]
+name = "xunji-health-triage"
+version = "0.1.0"
+description = "Deterministic Chinese health-action triage portfolio prototype"
+readme = "README.md"
+license = { file = "LICENSE" }
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi>=0.121,<1",
+    "uvicorn>=0.38,<1",
+    "pydantic>=2.12,<3",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8,<9",
+    "httpx>=0.28,<1",
+]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
